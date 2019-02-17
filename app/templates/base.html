@@ -29,6 +29,23 @@
         <div class="container">
             {% include "footer.html" %}
         </div>
+        
+        <div>
+            
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                 <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}  
+            
+        </div>
+        
+        
+        
     </footer>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

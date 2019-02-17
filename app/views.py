@@ -8,6 +8,10 @@ This file creates your application.
 from app import app
 from flask import render_template, request, redirect, url_for, flash
 
+from app.forms import EmailPasswordForm
+
+from app import mail
+from flask_mail import Message
 
 ###
 # Routing for your application.
@@ -52,6 +56,21 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+
+@app.route('/contact/', methods=["GET", "POST"])
+def contact():
+    form = EmailPasswordForm()
+    
+    if form.validate_on_submit():
+        msg = Message(form.subject.data, sender=(form.name.data,form.email.data),recipients=["to@example.com"])
+        msg.body = 'This is the body of the message'
+        mail.send(msg)
+        flash('Message Sent')
+        return redirect(url_for('home'))
+        
+    return render_template('contact.html', form=form)
+
 
 
 if __name__ == '__main__':
